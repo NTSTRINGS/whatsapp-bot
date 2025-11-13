@@ -1,0 +1,50 @@
+import express from "express";
+const app = express();
+
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("THA TECH COMMUNITY WhatsApp Bot is Live!");
+});
+
+app.post("/webhook", (req, res) => {
+  console.log("Incoming:", req.body);
+
+  const message = req.body.message?.toLowerCase() || "";
+
+  let reply = "Welcome to THA TECH COMMUNITY!";
+
+  if (message.includes("service") || message.includes("price")) {
+    reply = `Here are our services:
+
+- NIN Modification (Name, DOB, Phone Number, Address)
+- Validation
+- Lost Slip Recovery
+- Attestation Letter
+- IPE Processing
+
+Prices:
+• Modification: 6,000 – 10,000
+• Validation: 1,500
+• Attestation Letter: 2,000
+• Lost Slip: 1,000
+
+Delivery time: Under 24 hours.
+
+Send your requirement in this format:
+FULL NAME:
+NIN:
+OLD PHONE:
+NEW PHONE:
+ADDRESS:
+DOB:
+`;
+  }
+
+  return res.json({ reply });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =>
+  console.log(`Server running on port ${PORT}`)
+);
